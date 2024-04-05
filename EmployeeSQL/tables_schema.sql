@@ -6,6 +6,7 @@ create table departments(
 	dept_name varchar(30) NOT NULL
 );
 
+
 --Creating "titles" table
 create table titles(
 	title_id varchar(10) NOT NULL PRIMARY KEY,
@@ -31,7 +32,8 @@ create table dept_emp(
 	emp_no int NOT NULL,
 	dept_no varchar(10) NOT NULL,
 	FOREIGN KEY (emp_no) REFERENCES employees(emp_no),
-	FOREIGN KEY (dept_no) REFERENCES departments(dept_no)
+	FOREIGN KEY (dept_no) REFERENCES departments(dept_no),
+	PRIMARY KEY (emp_no, dept_no)
 );
 
 
@@ -40,13 +42,14 @@ create table dept_manager(
 	dept_no varchar(10) NOT NULL,
 	emp_no int NOT NULL,
 	FOREIGN KEY (dept_no) REFERENCES departments(dept_no),
-	FOREIGN KEY (emp_no) REFERENCES employees(emp_no)
+	FOREIGN KEY (emp_no) REFERENCES employees(emp_no),
+	PRIMARY KEY (dept_no, emp_no)
 );
 
 
 --Creating "salaries" table
 create table salaries(
-	emp_no int NOT NULL,
+	emp_no int NOT NULL PRIMARY KEY,
 	salary int NOT NULL,
 	FOREIGN KEY (emp_no) REFERENCES employees(emp_no)
 );
