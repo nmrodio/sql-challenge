@@ -3,6 +3,7 @@
 --------
 
 ## **Project Goal** ##
+This project aims to recover, integrate, and analyze historical employee data from Hewlett Hackard for the 1980s and 1990s. The primary data source consists of six legacy CSV files, representing the remnants of the employee database from that period.
 
 **Key Objectives:**
 
@@ -52,5 +53,21 @@
 
 ## **How does the code work?** ##
 **tables_schema:**
+* All six tables have to be created in this order due to the foreign key relationships in these tables! (Data type limits are estimated with a small buffer to handle potential future increases in data size)
+
+1) The first table that is created is called "departments". This table has two columns "dept_no" and "dept_name". The primary key for this table is "dept_no" and the data type is set to a varchar(10) since "dept_no" includes both letters and numbers (Ex: "d001"). The "dept_no" column is set as a varchar(30) data type. To ensure data integrity, "NOT NULL" constraints are applied to these columns, disallowing null values.
+
+2) The second table that is created is called "titles". This table has two columns "title_id" and "title". The primary key for this table is "title_id" and the data type is set to a varchar(10) since "title_id" includes both letters and numbers (Ex: "s0001"). The "titles" column is set as a varchar(30) data type. To ensure data integrity, "NOT NULL" constraints are applied to these columns, disallowing null values.
+
+3) The third table that is created is called "employees", which is the main driver table of the entire database. This table has seven columns - "emp_no", "emp_title_id", "birth_date", "first_name", "last_name", "sex", and "hire_date". The primary key for this table is "emp_no" and the data type is set to an integer(int) (Ex: 10001). The "emp_title_id" column is set to varchar(10) data type and "first_name" and "last_name" columns are set to a varchar(30) data type. The "sex" column is set to a char(1) data type since the input for this column should only ever be a fixed length one character entry (Ex. "M" for Male and "F" for Female). The "birth_date" and "hire_date" columns are set to date data type since both of those columns hold dates in yyyy-mm-dd format. Finally, a foreign key relationship is established between "emp_title_id" from the employees table in reference to the "title_id" from the titles table ==> This relationship is a MANY-TO-ONE. To ensure data integrity, "NOT NULL" constraints are applied to these columns, disallowing null values.
+
+4) The fourth table that is created is called "dept_emp". This table acts as a junction table and has two columns "emp_no" and "dept_no". The "emp_no" is set as a interger(int) data type and "dept_no" is set as a varchar(10) data type. There are two foreign key relationships established in this table - The first one being a foreign key relationship is established between "emp_no" from the dept_emp table in reference to the "emp_no" from the employees table ==> This relationship is a MANY-TO-ONE. The second foreign key relationship is established between "dept_no" from the dept_emp table in reference to the "dept_no" from the departments table ==> This relationship is also a MANY-TO-ONE. Lastly, a composite/primary key is created for this table by combining both "emp_no" and "dept_no" to uniquely identify each row in this table (Each employee and each department(s) they work in). To ensure data integrity, "NOT NULL" constraints are applied to these columns, disallowing null values.
+
+5) The fifth table that is create is called "dept_manager". This table also acts as a junction table and has two columns "dept_no" and "emp_no" which show each manager(s) of each department. The "emp_no" is set as a interger(int) data type and "dept_no" is set as a varchar(10) data type. There are two foreign key relationships established in this table - The first one being a foreign key relationship is established between "dept_no" from the dept_manager table in reference to the "dept_no" from the departments table ==> This relationship is a MANY-TO-ONE. The second foreign key relationship is established between "emp_no" from the dept_manager table in reference to the "emp_no" from the employees table ==> This relationship is a ONE-TO-ONE. Lastly, a composite/primary key is created for this table by combining both "dept_no" and "emp_no" to uniquely identify each row in this table (Each manager(s) of each department). To ensure data integrity, "NOT NULL" constraints are applied to these columns, disallowing null values.
+
+6) The sixth table that is created is called "salaries". This table has two columns "emp_no" and "salary". The primary key for this table is "emp_no" and the data type is set as a integer(int). The "salary" column is also set as a interger(int) data type. Finally, a foreign key relationship is established between "emp_no" from the salaries table in reference to the "emp_no" from the employees table ==> This relationship is a ONE-TO-ONE. To ensure data integrity, "NOT NULL" constraints are applied to these columns, disallowing null values.
+
+
+
 
 **queries_schema:**
